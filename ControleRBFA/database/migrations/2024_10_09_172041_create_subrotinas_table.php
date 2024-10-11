@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->foreignId('rotina_id')->constrained('rotinas');
+            $table->string('mes_referencia')->nullable();
+            $table->string('semana')->nullable();
+            $table->string('status')->default('pendente');
+            $table->boolean('mes_fechado')->default(false);
             $table->timestamps();
         });
     }

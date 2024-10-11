@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('controle_rotinas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subrotina_id')->constrained('subrotinas');
-            $table->foreignId('funcionario_id')->constrained('funcionarios');
+            $table->foreignId('rotina_id')->constrained('rotinas');
+            $table->foreignId('funcionario_id')->constrained('users');
             $table->foreignId('empresa_id')->constrained('empresas');
             $table->foreignId('departamento_id')->constrained('departamentos');
-            $table->string('mes_referencia');
+            $table->string('mes_referencia')->nullable();
             $table->string('semana')->nullable();
             $table->string('status')->default('pendente');
             $table->boolean('mes_fechado')->default(false);

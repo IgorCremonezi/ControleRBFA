@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('controle_obrigacoes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('obrigacao_id')->constrained('obrigacoes');
-            $table->foreignId('funcionario_id')->constrained('funcionarios');
+            $table->foreignId('funcionario_id')->constrained('users');
             $table->foreignId('empresa_id')->constrained('empresas');
             $table->foreignId('departamento_id')->constrained('departamentos');
-            $table->string('mes_referencia');
+            $table->string('mes_referencia')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('controle_obrigacaos');
+        Schema::dropIfExists('controle_obrigacoes');
     }
 };

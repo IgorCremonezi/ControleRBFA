@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->date('prazo');
-            $table->foreignId('empresa_id')->constrained('empresas');
-            $table->foreignId('departamento_id')->constrained('departamentos');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('obrigacaos');
+        Schema::dropIfExists('obrigacoes');
     }
 };

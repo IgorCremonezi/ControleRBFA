@@ -44,4 +44,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'departamento_id');
+    }
+
+    public function controleObrigacoes()
+    {
+        return $this->hasMany(ControleObrigacao::class);
+    }
+
+    public function controleRotinas()
+    {
+        return $this->hasMany(ControleRotina::class);
+    }
 }

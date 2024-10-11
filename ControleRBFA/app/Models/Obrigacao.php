@@ -9,19 +9,11 @@ class Obrigacao extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'prazo', 'empresa_id', 'departamento_id'];
+    protected $table = 'obrigacoes';
 
-    public function Relacionamento_empresa()
-    {
-        return $this->belongsTo(Empresa::class, 'empresa_id');
-    }
+    protected $fillable = ['nome', 'prazo'];
 
-    public function Relacionamento_departamento()
-    {
-        return $this->belongsTo(Departamento::class, 'departamento_id');
-    }
-
-    public function Relacionamento_controleObrigacoes()
+    public function controleObrigacoes()
     {
         return $this->hasMany(ControleObrigacao::class);
     }

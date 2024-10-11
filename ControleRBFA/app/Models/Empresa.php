@@ -11,12 +11,12 @@ class Empresa extends Model
 
     protected $fillable = ['nome'];
 
-    public function Relacionamento_obrigacoes()
+    public function obrigacoes()
     {
         return $this->hasMany(Obrigacao::class);
     }
 
-    public function Relacionamento_rotinas()
+    public function rotinas()
     {
         return $this->hasMany(Rotina::class);
     }

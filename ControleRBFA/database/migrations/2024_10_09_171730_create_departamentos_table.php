@@ -16,6 +16,12 @@ return new class extends Migration
             $table->string('nome');
             $table->timestamps();
         });
+
+        DB::table('departamentos')->insert([
+            ['nome' => 'Contabilidade'],
+            ['nome' => 'Escrita Fiscal'],
+            ['nome' => 'Departamento Pessoal'],
+        ]);
     }
 
     /**

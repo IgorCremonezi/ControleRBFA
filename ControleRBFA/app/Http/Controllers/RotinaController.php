@@ -12,7 +12,7 @@ class RotinaController extends Controller
      */
     public function index()
     {
-        $rotinas = Rotina::all();
+        $rotinas = Rotina::with(['controleRotinas', 'controleRotinas.empresa', 'controleRotinas.departamento'])->get();
         return view('rotinas.index', compact('rotinas'));
     }
 
@@ -21,7 +21,10 @@ class RotinaController extends Controller
      */
     public function create()
     {
-        return view('rotinas.create');
+        $empresas = Empresa::all();
+        $departamentos = Departamento::all();
+    
+        return view('rotinas.create', compact('empresas', 'departamentos'));
     }
 
     /**
@@ -32,12 +35,33 @@ class RotinaController extends Controller
         $request->validate([
             'nome' => 'required',
             'descricao' => 'nullable',
-            'empresa_id' => 'required',
+            'empresas_id' => 'required|array',
             'departamento_id' => 'required',
         ]);
 
-        Rotina::create($request->all());
-        return redirect()->route('rotinas.index')->with('success', 'Rotina criada com sucesso!');
+        $rotina = Rotina::create([
+            'nome' => $request->nome,
+            'descricao' => $request->descricao,
+        ]);
+
+        foreach ($request->empresas_id as $empresa_id) {
+            ControleRotina::create([
+                'rotina_id' => $rotina->id,
+                'empresa_id' => $empresa_id,
+                'departamento_id' => $request->departamento_id,
+                'funcionario_id' => auth()->user()->id,
+            ]);
+        }
+    
+        foreach ($request->empresas_id as $empresa_id) {
+            ControleObrigacao::create([
+                'obrigacao_id' => $obrigacao->id,
+                'empresa_id' => $empresa_id,
+                'departamento_id' => $request->departamento_id,
+                'funcionario_id' => auth()->user()->id,
+            ]);
+        }
+        return redirect()->route('obrigacoes.index')->with('success', 'Obrigação criada com sucesso!');
     }
 
     /**

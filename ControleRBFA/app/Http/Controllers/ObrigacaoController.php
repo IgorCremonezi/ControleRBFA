@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Obrigacao;
+use App\Models\ControleObrigacao;
+use App\Models\Empresa;
+use App\Models\Departamento;
 
 class ObrigacaoController extends Controller
 {
@@ -12,7 +15,7 @@ class ObrigacaoController extends Controller
      */
     public function index()
     {
-        $obrigacoes = Obrigacao::all();
+        $obrigacoes = Obrigacao::with(['controleObrigacoes', 'controleObrigacoes.empresa', 'controleObrigacoes.departamento'])->get();
         return view('obrigacoes.index', compact('obrigacoes'));
     }
 
@@ -21,7 +24,10 @@ class ObrigacaoController extends Controller
      */
     public function create()
     {
-        return view('obrigacoes.create');
+        $empresas = Empresa::all();
+        $departamentos = Departamento::all();
+    
+        return view('obrigacoes.create', compact('empresas', 'departamentos'));
     }
 
     /**
@@ -32,11 +38,23 @@ class ObrigacaoController extends Controller
         $request->validate([
             'nome' => 'required',
             'prazo' => 'required|date',
-            'empresa_id' => 'required',
+            'empresas_id' => 'required|array',
             'departamento_id' => 'required',
         ]);
 
-        Obrigacao::create($request->all());
+        $obrigacao = Obrigacao::create([
+            'nome' => $request->nome,
+            'prazo' => $request->prazo,
+        ]);
+    
+        foreach ($request->empresas_id as $empresa_id) {
+            ControleObrigacao::create([
+                'obrigacao_id' => $obrigacao->id,
+                'empresa_id' => $empresa_id,
+                'departamento_id' => $request->departamento_id,
+                'funcionario_id' => auth()->user()->id,
+            ]);
+        }
         return redirect()->route('obrigacoes.index')->with('success', 'Obrigação criada com sucesso!');
     }
 
@@ -45,7 +63,10 @@ class ObrigacaoController extends Controller
      */
     public function show(Obrigacao $obrigacao)
     {
-        return view('obrigacoes.show', compact('obrigacao'));
+        $empresas = Empresa::all();
+        $departamentos = Departamento::all();
+
+        return view('obrigacoes.show', compact('obrigacao', 'empresas', 'departamentos'));
     }
 
     /**
@@ -53,7 +74,14 @@ class ObrigacaoController extends Controller
      */
     public function edit(Obrigacao $obrigacao)
     {
-        return view('obrigacoes.edit', compact('obrigacao'));
+        $empresas = Empresa::all();
+        $departamentos = Departamento::all();
+
+        $empresasSelecionadas = $obrigacao->controleObrigacoes->pluck('empresa_id')->toArray();
+        $controleObrigacao = $obrigacao->controleObrigacoes->first();
+        $departamentoSelecionado = $controleObrigacao->departamento_id;
+
+        return view('obrigacoes.edit', compact('obrigacao', 'empresas', 'departamentos', 'empresasSelecionadas', 'departamentoSelecionado'));
     }
 
     /**
@@ -64,11 +92,26 @@ class ObrigacaoController extends Controller
         $request->validate([
             'nome' => 'required',
             'prazo' => 'required|date',
-            'empresa_id' => 'required',
+            'empresas_id' => 'required|array',
             'departamento_id' => 'required',
         ]);
 
-        $obrigacao->update($request->all());
+        $obrigacao->update([
+            'nome' => $request->nome,
+            'prazo' => $request->prazo,
+        ]);
+
+        $obrigacao->controleObrigacoes()->delete();
+    
+        foreach ($request->empresas_id as $empresa_id) {
+            ControleObrigacao::create([
+                'obrigacao_id' => $obrigacao->id,
+                'empresa_id' => $empresa_id,
+                'departamento_id' => $request->departamento_id,
+                'funcionario_id' => auth()->user()->id,
+            ]);
+        }
+    
         return redirect()->route('obrigacoes.index')->with('success', 'Obrigação atualizada com sucesso!');
     }
 
@@ -77,7 +120,9 @@ class ObrigacaoController extends Controller
      */
     public function destroy(Obrigacao $obrigacao)
     {
+        $obrigacao->controleObrigacoes()->delete();
         $obrigacao->delete();
-        return redirect()->route('obrigacoes.index')->with('success', 'Obrigação deletada com sucesso!');
+
+        return redirect()->route('obrigacoes.index')->with('success', 'Obrigação deletada com sucesso.');
     }
 }

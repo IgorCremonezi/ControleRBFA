@@ -11,17 +11,17 @@ class Departamento extends Model
     
     protected $fillable = ['nome'];
 
-    public function Relacionamento_funcionarios()
+    public function users()
     {
-        return $this->hasMany(Funcionario::class);
+        return $this->hasMany(User::class);
     }
 
-    public function Relacionamento_obrigacoes()
+    public function obrigacoes()
     {
         return $this->hasMany(Obrigacao::class);
     }
 
-    public function Relacionamento_rotinas()
+    public function rotinas()
     {
         return $this->hasMany(Rotina::class);
     }

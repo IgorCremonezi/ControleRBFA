@@ -11,22 +11,22 @@ class Rotina extends Model
 
     protected $fillable = ['nome', 'descricao', 'empresa_id', 'departamento_id'];
 
-    public function Relacionamento_empresa()
+    public function empresa()
     {
         return $this->belongsTo(Empresa::class, 'empresa_id');
     }
 
-    public function Relacionamento_departamento()
+    public function departamento()
     {
         return $this->belongsTo(Departamento::class, 'departamento_id');
     }
 
-    public function Relacionamento_subrotinas()
+    public function subrotinas()
     {
         return $this->hasMany(Subrotina::class);
     }
 
-    public function Relacionamento_controleRotinas()
+    public function controleRotinas()
     {
         return $this->hasMany(ControleRotina::class);
     }

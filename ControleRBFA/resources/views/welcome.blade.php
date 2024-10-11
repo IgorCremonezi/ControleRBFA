@@ -21,7 +21,7 @@
             }
 
             body {
-                background-image: url('{{ asset('imagens/Logo Escritorio.png') }}'), linear-gradient(to bottom left, rgba(184, 152, 93, 0.5) 50%, rgba(54, 87, 106, 0.5) 50%);
+                background-image: url('{{ asset('imagens/Logo Escritorio.png') }}'), linear-gradient(to bottom left, rgba(184, 152, 93, 0.2) 50%, rgba(54, 87, 106, 0.2) 50%);
                 background-size: 50% cover;
                 background-repeat: no-repeat;
                 background-position: center;
