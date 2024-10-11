@@ -12,7 +12,7 @@ class SubrotinaController extends Controller
      */
     public function index()
     {
-        $subrotinas = Subrotina::all();
+        $subrotinas = Subrotina::with('rotina')->get();
         return view('subrotinas.index', compact('subrotinas'));
     }
 

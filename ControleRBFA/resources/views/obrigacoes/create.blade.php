@@ -38,5 +38,6 @@
         </div>
 
         <button type="submit" class="btn btn-success">Cadastrar</button>
+        <a href="{{ route('obrigacoes.index') }}" class="btn btn-secondary">Voltar</a>
     </form>
 @endsection

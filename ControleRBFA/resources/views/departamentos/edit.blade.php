@@ -14,6 +14,7 @@
             </div>
 
             <button type="submit" class="btn btn-warning">Atualizar</button>
+            <a href="{{ route('departamentos.index') }}" class="btn btn-secondary">Voltar</a>
         </form>
     </div>
 @endsection

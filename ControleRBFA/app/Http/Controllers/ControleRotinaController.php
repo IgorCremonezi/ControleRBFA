@@ -30,7 +30,7 @@ class ControleRotinaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'subrotina_id' => 'required',
+            'rotina_id' => 'required',
             'funcionario_id' => 'required',
             'empresa_id' => 'required',
             'departamento_id' => 'required',
@@ -66,7 +66,7 @@ class ControleRotinaController extends Controller
     public function update(Request $request, ControleRotina $controleRotina)
     {
         $request->validate([
-            'subrotina_id' => 'required',
+            'rotina_id' => 'required',
             'funcionario_id' => 'required',
             'empresa_id' => 'required',
             'departamento_id' => 'required',

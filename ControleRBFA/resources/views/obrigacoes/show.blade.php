@@ -15,5 +15,7 @@
                     @endforeach
             </div>
         </div>
+
+        <a href="{{ route('obrigacoes.index') }}" class="btn btn-secondary mt-3">Voltar</a>
     </div>
 @endsection

@@ -9,5 +9,7 @@
                 <p><strong>Nome:</strong> {{ $departamento->nome }}</p>
             </div>
         </div>
+
+        <a href="{{ route('departamentos.index') }}" class="btn btn-secondary mt-3">Voltar</a>
     </div>
 @endsection

@@ -9,5 +9,7 @@
                 <p><strong>Nome:</strong> {{ $empresa->nome }}</p>
             </div>
         </div>
+
+        <a href="{{ route('empresas.index') }}" class="btn btn-secondary mt-3">Voltar</a>
     </div>
 @endsection
