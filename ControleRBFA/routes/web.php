@@ -31,7 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('subrotinas', SubrotinaController::class);
     Route::resource('controles_obrigacoes', ControleObrigacaoController::class)->parameters(['controles_obrigacoes' => 'controle_obrigacao']);
     Route::resource('controles_rotinas', ControleRotinaController::class);
-    Route::get('/telas', [ControleController::class, 'index'])->name('cadastros');
+    Route::get('/telas/cadastros', [ControleController::class, 'cadastrar'])->name('cadastros');
+    Route::get('/telas/controle', [ControleController::class, 'controlar'])->name('controle');
 });
 
 require __DIR__.'/auth.php';
