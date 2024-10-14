@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subrotina;
+use App\Models\Rotina;
 
 class SubrotinaController extends Controller
 {
@@ -21,7 +22,9 @@ class SubrotinaController extends Controller
      */
     public function create()
     {
-        return view('subrotinas.create');
+        $rotinas = Rotina::all();
+
+        return view('subrotinas.create', compact('rotinas'));
     }
 
     /**
@@ -43,7 +46,9 @@ class SubrotinaController extends Controller
      */
     public function show(Subrotina $subrotina)
     {
-        return view('subrotinas.show', compact('subrotina'));
+        $rotinas = Rotina::all();
+
+        return view('subrotinas.show', compact('subrotina', 'rotinas'));
     }
 
     /**
@@ -51,7 +56,11 @@ class SubrotinaController extends Controller
      */
     public function edit(Subrotina $subrotina)
     {
-        return view('subrotinas.edit', compact('subrotina'));
+        $rotinas = Rotina::all();
+
+        $rotinaSelecionada = $subrotina->rotina_id;
+
+        return view('subrotinas.edit', compact('subrotina', 'rotinas', 'rotinaSelecionada'));
     }
 
     /**

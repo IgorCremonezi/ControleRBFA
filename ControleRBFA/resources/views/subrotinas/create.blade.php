@@ -13,8 +13,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="rotinas_id" class="form-label">Nome da Rotina Pai: </label>
-            <select class="form-control" id="rotinas_id" name="rotinas_id" required multiple>
+            <label for="rotina_id" class="form-label">Nome da Rotina Pai: </label>
+            <select class="form-control" id="rotina_id" name="rotina_id" required>
                 <option value="">Selecione...</option>
                 @foreach($rotinas as $rotina)
                     <option value="{{ $rotina->id }}">{{ $rotina->nome }}</option>
