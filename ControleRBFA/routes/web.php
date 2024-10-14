@@ -9,6 +9,7 @@ use App\Http\Controllers\RotinaController;
 use App\Http\Controllers\SubrotinaController;
 use App\Http\Controllers\ControleObrigacaoController;
 use App\Http\Controllers\ControleRotinaController;
+use App\Http\Controllers\ControleSubRotinaController;
 use App\Http\Controllers\ControleController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,8 +32,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('subrotinas', SubrotinaController::class);
     Route::resource('controles_obrigacoes', ControleObrigacaoController::class)->parameters(['controles_obrigacoes' => 'controle_obrigacao']);
     Route::resource('controles_rotinas', ControleRotinaController::class);
+    Route::resource('controles_subrotinas', ControleSubRotinaController::class);
     Route::get('/telas/cadastros', [ControleController::class, 'cadastrar'])->name('cadastros');
     Route::get('/telas/controle', [ControleController::class, 'controlar'])->name('controle');
+    Route::get('/controles/contabilidade/telainicial', [ControleController::class, 'contabilidade'])->name('telainicial');
+    Route::get('/controles/contabilidade/{empresa}', [ControleController::class, 'mostrarEmpresa'])->name('mostrar');
 });
 
 require __DIR__.'/auth.php';

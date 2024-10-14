@@ -8,6 +8,11 @@
             <div class="card-body">
                 <p><strong>Nome:</strong> {{ $subrotina->nome }}</p>
                 <p><strong>Nome Rotina Pai:</strong> {{ $subrotina->rotina->nome }}</p>
+                <p><strong>Departamento:</strong> {{ $subrotina->controleSubRotinas->first()->departamento->nome }}</p>
+                <p><strong>Empresas:</strong></p>
+                    @foreach ($subrotina->controleSubRotinas as $controle)
+                        <p>{{ $controle->empresa->nome }}</p>
+                    @endforeach
             </div>
         </div>
 

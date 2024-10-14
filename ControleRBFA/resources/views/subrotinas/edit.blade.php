@@ -25,6 +25,30 @@
                 </select>
             </div>
 
+            <div class="mb-3">
+                <label for="empresas_id" class="form-label">Empresas: </label>
+                <select class="form-control" id="empresas_id" name="empresas_id[]" required multiple>
+                    @foreach($empresas as $empresa)
+                        <option value="{{ $empresa->id }}" 
+                            @if(in_array($empresa->id, $empresasSelecionadas)) selected @endif>
+                            {{ $empresa->nome }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="departamento_id" class="form-label">Departamento: </label>
+                <select class="form-control" id="departamento_id" name="departamento_id" required>
+                    @foreach($departamentos as $departamento)
+                        <option value="{{ $departamento->id }}" 
+                            @if($departamento->id == $departamentoSelecionado) selected @endif>
+                            {{ $departamento->nome }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <button type="submit" class="btn btn-warning">Atualizar</button>
             <a href="{{ route('subrotinas.index') }}" class="btn btn-secondary">Voltar</a>
         </form>

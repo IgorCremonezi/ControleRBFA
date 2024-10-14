@@ -9,11 +9,12 @@ class Rotina extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'descricao', 'empresa_id', 'departamento_id'];
+    protected $fillable = ['nome', 'descricao', 'departamento_id'];
 
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'empresa_id');
+        return $this->belongsToMany(Empresa::class, 'controle_rotinas')
+                    ->withPivot('funcionario_id', 'mes_referencia', 'semana', 'status', 'mes_fechado');
     }
 
     public function departamento()

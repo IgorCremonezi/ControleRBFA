@@ -18,6 +18,13 @@ class Empresa extends Model
 
     public function rotinas()
     {
-        return $this->hasMany(Rotina::class);
+        return $this->belongsToMany(Rotina::class, 'controle_rotinas')
+                    ->withPivot('funcionario_id', 'mes_referencia', 'semana', 'status', 'mes_fechado');
+    }
+
+    public function subrotinas()
+    {
+        return $this->belongsToMany(Subrotina::class, 'controle_sub_rotinas')
+                    ->withPivot('funcionario_id', 'mes_referencia', 'semana', 'status', 'mes_fechado');
     }
 }

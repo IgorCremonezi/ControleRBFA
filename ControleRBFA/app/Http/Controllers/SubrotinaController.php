@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Subrotina;
 use App\Models\Rotina;
+use App\Models\ControleSubRotina;
+use App\Models\Empresa;
+use App\Models\Departamento;
 
 class SubrotinaController extends Controller
 {
@@ -13,7 +16,7 @@ class SubrotinaController extends Controller
      */
     public function index()
     {
-        $subrotinas = Subrotina::with('rotina')->get();
+        $subrotinas = Subrotina::with(['controleSubRotinas', 'controleSubRotinas.empresa', 'controleSubRotinas.departamento'])->get();
         return view('subrotinas.index', compact('subrotinas'));
     }
 
@@ -23,8 +26,10 @@ class SubrotinaController extends Controller
     public function create()
     {
         $rotinas = Rotina::all();
-
-        return view('subrotinas.create', compact('rotinas'));
+        $empresas = Empresa::all();
+        $departamentos = Departamento::all();
+    
+        return view('subrotinas.create', compact('rotinas', 'empresas', 'departamentos'));
     }
 
     /**
@@ -35,10 +40,27 @@ class SubrotinaController extends Controller
         $request->validate([
             'nome' => 'required',
             'rotina_id' => 'required',
+            'empresas_id' => 'required|array',
+            'departamento_id' => 'required',
         ]);
 
-        Subrotina::create($request->all());
-        return redirect()->route('subrotinas.index')->with('success', 'Subrotina criada com sucesso!');
+        $subrotina = Subrotina::create([
+            'nome' => $request->nome,
+            'rotina_id' => $request->rotina_id,
+            'departamento_id' => $request->departamento_id,
+        ]);
+
+        foreach ($request->empresas_id as $empresa_id) {
+            ControleSubRotina::create([
+                'subrotina_id' => $subrotina->id,
+                'rotina_id' => $subrotina->rotina_id,
+                'empresa_id' => $empresa_id,
+                'departamento_id' => $request->departamento_id,
+                'funcionario_id' => auth()->user()->id,
+            ]);
+        }
+
+        return redirect()->route('subrotinas.index')->with('success', 'Sub-rotina criada com sucesso!');
     }
 
     /**
@@ -47,8 +69,10 @@ class SubrotinaController extends Controller
     public function show(Subrotina $subrotina)
     {
         $rotinas = Rotina::all();
+        $empresas = Empresa::all();
+        $departamentos = Departamento::all();
 
-        return view('subrotinas.show', compact('subrotina', 'rotinas'));
+        return view('subrotinas.show', compact('subrotina', 'rotinas', 'empresas', 'departamentos'));
     }
 
     /**
@@ -57,10 +81,15 @@ class SubrotinaController extends Controller
     public function edit(Subrotina $subrotina)
     {
         $rotinas = Rotina::all();
+        $empresas = Empresa::all();
+        $departamentos = Departamento::all();
 
+        $empresasSelecionadas = $subrotina->controleSubRotinas->pluck('empresa_id')->toArray();
+        $controleSubRotina = $subrotina->controleSubRotinas->first();
+        $departamentoSelecionado = $controleSubRotina->departamento_id;
         $rotinaSelecionada = $subrotina->rotina_id;
 
-        return view('subrotinas.edit', compact('subrotina', 'rotinas', 'rotinaSelecionada'));
+        return view('subrotinas.edit', compact('subrotina', 'rotinas', 'empresas', 'departamentos', 'empresasSelecionadas', 'departamentoSelecionado', 'rotinaSelecionada'));
     }
 
     /**
@@ -71,10 +100,29 @@ class SubrotinaController extends Controller
         $request->validate([
             'nome' => 'required',
             'rotina_id' => 'required',
+            'empresas_id' => 'required',
+            'departamento_id' => 'required',
         ]);
 
-        $subrotina->update($request->all());
-        return redirect()->route('subrotinas.index')->with('success', 'Subrotina atualizada com sucesso!');
+        $subrotina->update([
+            'nome' => $request->nome,
+            'rotina_id' => $request->rotina_id,
+            'departamento_id' => $request->departamento_id,
+        ]);
+
+        $subrotina->controleSubRotinas()->delete();
+    
+        foreach ($request->empresas_id as $empresa_id) {
+            ControleSubRotina::create([
+                'subrotina_id' => $subrotina->id,
+                'rotina_id' => $subrotina->rotina_id,
+                'empresa_id' => $empresa_id,
+                'departamento_id' => $request->departamento_id,
+                'funcionario_id' => auth()->user()->id,
+            ]);
+        }
+    
+        return redirect()->route('subrotinas.index')->with('success', 'Sub-rotina atualizada com sucesso!');
     }
 
     /**
@@ -82,7 +130,9 @@ class SubrotinaController extends Controller
      */
     public function destroy(Subrotina $subrotina)
     {
+        $subrotina->controleSubRotinas()->delete();
         $subrotina->delete();
+
         return redirect()->route('subrotinas.index')->with('success', 'Subrotina deletada com sucesso!');
     }
 }
