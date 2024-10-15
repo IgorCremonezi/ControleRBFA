@@ -19,8 +19,11 @@
 
         <div class="mb-3">
             <label for="empresas_id" class="form-label">Selecione as Empresas: </label>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleSelectAll(this)">
+                <label class="form-check-label" for="select-all">Selecionar Todas</label>
+            </div>
             <select class="form-control" id="empresas_id" name="empresas_id[]" required multiple>
-                <option value="">Selecione...</option>
                 @foreach($empresas as $empresa)
                     <option value="{{ $empresa->id }}">{{ $empresa->nome }}</option>
                 @endforeach
@@ -40,4 +43,6 @@
         <button type="submit" class="btn btn-success">Cadastrar</button>
         <a href="{{ route('rotinas.index') }}" class="btn btn-secondary">Voltar</a>
     </form>
+
+    <script src="{{ asset('js/selectAll.js') }}"></script>
 @endsection

@@ -27,6 +27,10 @@
 
             <div class="mb-3">
                 <label for="empresas_id" class="form-label">Empresas: </label>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleSelectAll(this)">
+                    <label class="form-check-label" for="select-all">Selecionar Todas</label>
+                </div>
                 <select class="form-control" id="empresas_id" name="empresas_id[]" required multiple>
                     @foreach($empresas as $empresa)
                         <option value="{{ $empresa->id }}" 
@@ -53,4 +57,6 @@
             <a href="{{ route('subrotinas.index') }}" class="btn btn-secondary">Voltar</a>
         </form>
     </div>
+
+    <script src="{{ asset('js/selectAll.js') }}"></script>
 @endsection

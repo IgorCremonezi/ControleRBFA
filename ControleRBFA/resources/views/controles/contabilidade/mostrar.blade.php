@@ -19,7 +19,7 @@
                         <td>
                             @foreach ($subrotinas as $subrotina)
                                 @if ($subrotina->rotina_id == $rotina->id)
-                                    <div>{{ $subrotina->nome }}</div>
+                                    <div class="border-bottom pb-2 pt-2 border-2">{{ $subrotina->nome }}</div>
                                 @endif
                             @endforeach
                         </td>
