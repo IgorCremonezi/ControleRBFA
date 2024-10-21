@@ -5,8 +5,6 @@
 @section('content')
     <h1 class="mb-4">Selecione a empresa</h1>
 
-    <a href="{{ route('controle') }}" class="btn btn-secondary mt-3">Voltar</a>
-
     <table class="table table-striped mt-5">
         <tbody>
             @foreach ($empresas as $empresa)
@@ -16,4 +14,6 @@
             @endforeach
         </tbody>
     </table>
+
+    <a href="{{ route('controle') }}" class="btn btn-secondary mt-3">Voltar</a>
 @endsection
