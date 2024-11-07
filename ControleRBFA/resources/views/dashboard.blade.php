@@ -30,6 +30,12 @@
 
         var chartType = document.getElementById('chartType').value;
         var is3D = document.getElementById('is3D').checked;
+        if (chartType === 'ColumnChart') {
+            is3D = false;
+            document.getElementById('is3D').disabled = true;
+            } else {
+            document.getElementById('is3D').disabled = false;
+            }
 
         var data = google.visualization.arrayToDataTable([
             ['Rotinas', 'Quantidade de Sub-Rotinas'],
